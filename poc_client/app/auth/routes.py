@@ -8,7 +8,10 @@ auth_blueprint = Blueprint(name="auth", import_name=__name__, url_prefix="/auth"
 def callback():
     auth_code = request.args.get("code")
     current_app.auth.process_callback(auth_code)
-    return redirect(url_for("root.home", _external=True, _scheme="https"))
+    redirect_url = current_app.auth.get_redirect()
+    if redirect_url:
+        return redirect(redirect_url)
+    return redirect(url_for("root.home"))
 
 
 @auth_blueprint.route("/logout", methods=["GET"])

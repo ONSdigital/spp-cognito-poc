@@ -2,6 +2,8 @@ import os
 
 from flask import Flask, g, session
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 from app.auth import Auth, AuthConfig, auth_blueprint, new_oauth_client
 
 
@@ -18,7 +20,7 @@ def create_app():
     auth_config = AuthConfig()
     oauth_client = new_oauth_client(auth_config)
     application.auth = Auth(auth_config, oauth_client, session)
-    return application
+    return ProxyFix(application, x_for=1, x_host=1)
 
 
 def add_blueprints(application):

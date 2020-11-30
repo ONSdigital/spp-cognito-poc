@@ -3,6 +3,7 @@ import os
 import requests
 from authlib.integrations.requests_client import OAuth2Session
 from authlib.jose import jwt
+from authlib.jose.errors import ExpiredTokenError
 
 
 class AuthConfig:
@@ -70,6 +71,12 @@ class Auth:
 
     def has_role(self, role):
         return role in self.get_roles()
+
+    def set_redirect(self, url):
+        self._session["redirect_url"] = url
+
+    def get_redirect(self):
+        return self._session.get("redirect_url")
 
     def _get_auth_info(self, auth_code):
         return self._oauth.fetch_token(
