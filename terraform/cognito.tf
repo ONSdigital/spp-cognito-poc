@@ -12,6 +12,10 @@ resource "aws_cognito_user_pool" "cognito_poc" {
   admin_create_user_config {
     allow_admin_create_user_only = true
   }
+
+  user_pool_add_ons {
+    advanced_security_mode = "AUDIT"
+  }
 }
 
 resource "aws_cognito_user_pool_domain" "cognito_poc" {

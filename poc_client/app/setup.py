@@ -1,7 +1,6 @@
 import os
 
 from flask import Flask, g, session
-
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.auth import Auth, AuthConfig, auth_blueprint, new_oauth_client
