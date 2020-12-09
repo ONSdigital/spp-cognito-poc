@@ -177,4 +177,5 @@ requirements.txt
 
 *.zip
 .terraform
+.terraform.lock.hcl
 .idea
