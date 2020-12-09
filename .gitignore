@@ -177,3 +177,4 @@ requirements.txt
 
 *.zip
 .terraform
+.idea

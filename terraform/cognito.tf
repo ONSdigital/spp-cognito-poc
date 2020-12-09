@@ -34,6 +34,8 @@ resource "aws_cognito_user_pool_client" "poc_client" {
   supported_identity_providers = ["COGNITO"]
 
   callback_urls = ["https://spp-cognito-poc.crosscutting.aws.onsdigital.uk/auth/callback"]
+  # callback_urls = ["http://localhost:5000/auth/callback"]
+
 
   prevent_user_existence_errors = "ENABLED"
 
@@ -97,8 +99,8 @@ output cognito_domain {
   value = "https://${aws_cognito_user_pool_domain.cognito_poc.domain}.auth.${var.region}.amazoncognito.com"
 }
 
-output cognito_public_key_url {
-  value = "https://${aws_cognito_user_pool.cognito_poc.endpoint}/.well-known/jwks.json"
+output cognito_endpoint {
+  value = aws_cognito_user_pool.cognito_poc.endpoint
 }
 
 output poc_client_url {

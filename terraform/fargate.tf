@@ -289,12 +289,12 @@ resource "aws_ecs_task_definition" "app" {
         "value": "https://${aws_cognito_user_pool_domain.cognito_poc.domain}.auth.${var.region}.amazoncognito.com"
       },
       {
-        "name": "COGNITO_PUBLIC_KEY_URL",
-        "value": "https://${aws_cognito_user_pool.cognito_poc.endpoint}/.well-known/jwks.json"
+        "name": "COGNITO_ENDPOINT",
+        "value": "${aws_cognito_user_pool.cognito_poc.endpoint}"
       },
       {
-        "name": "APP_HOST",
-        "value": "https://spp-cognito-poc.crosscutting.aws.onsdigital.uk"
+        "name": "CALLBACK_URL",
+        "value": "https://spp-cognito-poc.crosscutting.aws.onsdigital.uk/auth/callback"
       },
       {
         "name": "SESSION_COOKIE_SECURE",

@@ -3,7 +3,7 @@ import os
 from flask import Flask, g, session
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from app.auth import Auth, AuthConfig, auth_blueprint, new_oauth_client
+from spp_cognito_auth import Auth, AuthConfig, AuthBlueprint, new_oauth_client
 
 
 def create_app():
@@ -16,14 +16,17 @@ def create_app():
         "SESSION_COOKIE_SECURE", False
     )
     application.secret_key = "my-secret-key"
-    auth_config = AuthConfig()
+    auth_config = AuthConfig.from_env()
     oauth_client = new_oauth_client(auth_config)
     application.auth = Auth(auth_config, oauth_client, session)
-    return ProxyFix(application, x_for=1, x_host=1)
+    # Run with proxyfix when behind ELB as SSL is done at the load balancer
+    if application.config["SESSION_COOKIE_SECURE"]:
+        return ProxyFix(application, x_for=1, x_host=1)
+    return application
 
 
 def add_blueprints(application):
-    application.register_blueprint(auth_blueprint)
+    application.register_blueprint(AuthBlueprint().blueprint())
 
     from app.root import root_blueprint
 

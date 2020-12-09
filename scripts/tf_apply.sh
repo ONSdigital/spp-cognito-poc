@@ -3,7 +3,7 @@
 set -euo pipefail
 
 pushd poc_client
-  docker build . -t sambryant/spp-poc-client
+  DOCKER_BUILDKIT=1 docker build --ssh default . -t sambryant/spp-poc-client
   docker push sambryant/spp-poc-client
 popd
 

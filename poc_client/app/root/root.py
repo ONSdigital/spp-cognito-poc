@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app
 
-from app.auth import requires_auth, requires_role
+from spp_cognito_auth import requires_auth, requires_role
 
 root_blueprint = Blueprint(name="root", import_name=__name__, url_prefix="/")
 
