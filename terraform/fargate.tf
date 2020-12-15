@@ -265,7 +265,7 @@ resource "aws_ecs_task_definition" "app" {
 [
   {
     "cpu": 256,
-    "image": "sambryant/spp-poc-client",
+    "image": "sambryant/spp-poc-client:redis",
     "memory": 512,
     "name": "spp-cognito-poc-client",
     "networkMode": "awsvpc",
@@ -299,6 +299,10 @@ resource "aws_ecs_task_definition" "app" {
       {
         "name": "SESSION_COOKIE_SECURE",
         "value": "True"
+      },
+      {
+        "name": "REDIS_ADDRESS",
+        "value": "${aws_elasticache_cluster.poc_client.cache_nodes.0.address}"
       }
     ]
   }

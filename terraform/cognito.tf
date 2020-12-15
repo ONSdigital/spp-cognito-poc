@@ -87,26 +87,26 @@ resource "null_resource" "poc_users" {
   }
 }
 
-output client_id {
+output "client_id" {
   value = aws_cognito_user_pool_client.poc_client.id
 }
 
-output client_secret {
+output "client_secret" {
   value = aws_cognito_user_pool_client.poc_client.client_secret
 }
 
-output cognito_domain {
+output "cognito_domain" {
   value = "https://${aws_cognito_user_pool_domain.cognito_poc.domain}.auth.${var.region}.amazoncognito.com"
 }
 
-output cognito_endpoint {
+output "cognito_endpoint" {
   value = aws_cognito_user_pool.cognito_poc.endpoint
 }
 
-output poc_client_url {
+output "poc_client_url" {
   value = "https://spp-cognito-poc.crosscutting.aws.onsdigital.uk"
 }
 
-output fake_baw_url {
+output "fake_baw_url" {
   value = "https://spp-cognito-poc-baw.crosscutting.aws.onsdigital.uk"
 }

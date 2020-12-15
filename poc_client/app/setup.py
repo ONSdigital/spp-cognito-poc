@@ -16,6 +16,9 @@ def create_app():
         "SESSION_COOKIE_SECURE", False
     )
     application.secret_key = "my-secret-key"
+    redis_address = os.getenv("REDIS_ADDRESS")
+    if redis_address:
+        set_redis_session(application, redis_address)
     auth_config = AuthConfig.from_env()
     oauth_client = new_oauth_client(auth_config)
     application.auth = Auth(auth_config, oauth_client, session)
@@ -31,3 +34,14 @@ def add_blueprints(application):
     from app.root import root_blueprint
 
     application.register_blueprint(root_blueprint)
+
+def set_redis_session(application, redis_address):
+    import redis
+
+    from flask_session import Session
+
+    store = redis.StrictRedis(host=redis_address)
+
+    application.config["SESSION_TYPE"] = "redis"
+    application.config["SESSION_REDIS"] = store
+    Session(application)

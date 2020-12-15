@@ -12,6 +12,8 @@ Flask-Script = "^2.0.6"
 requests = "^2.25.0"
 Authlib = "^0.15.2"
 gunicorn = "^20.0.4"
+redis = "^3.5.3"
+Flask-Session = "^0.3.2"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
