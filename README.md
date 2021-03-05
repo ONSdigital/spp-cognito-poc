@@ -10,6 +10,14 @@ A simple PoC to test the approach of using Cognito as an authentication front en
     `production` cognito anywhere.
   - You probably want to ignore `fargate.tf` its what deploys the two test apps `fake_baw` and `poc_client`
     but isn't really how you would likely deploy them for real, it was a quick and dirty way of getting them running.
+
+  - **Note**: If when running a terraform plan you encounter an error such as: 
+    "Error: Invalid for_each argument  on fargate.tf line 170, in resource "aws_route53_record" "poc_client_validation":"
+
+    The fix is to run 
+    terraform apply -target aws_acm_certificate.poc_client
+    Then a subsequent plan and apply will run successfully.
+
 - **fake_baw** - An extremely simple flask app with no auth that serves some static html links to the `poc_client`.
   Each link opens a new tab/ window in a simple way of replicating what happens in BAW.
 - **poc_client** - The juicy bit!
@@ -38,17 +46,17 @@ this then try using the `force logout` option and then test the user behaviour a
 
 Two users have also been created:
 
-- `test-user`, with a password of `barfoo` and roles of `["main_survey.read", "main_survey.write"]`
-- `test-user2`, with a password of `fwibble` and roles of `["secondary_survey.read"]`
+- `test-user`, with a password of `foobar` and roles of `["main_survey.read", "main_survey.write"]`
+- `test-user2`, with a password of `foobar` and roles of `["secondary_survey.read"]`
 
 The expected behaviour is that a user would go to `fake_baw` using the url
 <https://spp-cognito-poc-baw.crosscutting.aws.onsdigital.uk>.
 
-If you use this url, clicing any of the `Home`, `Main Survey` or `Secondary Survey` options should prompt you to login.
+If you use this url, clicking any of the `Home`, `Main Survey` or `Secondary Survey` options should prompt you to login.
 Once you have logged in once you can close your tab, and attempt to re-use any of the links and they should let you in
 without any need to login.
 
 You should notice that when accessing the `Main Survey` page that `test-user` gets a nice response and `test-user2`
 gets a `Forbidden` authorisation error. Likewise if you access the `Secondary Survey` page then `test-user2` should get
-a nice response while `test-user` gets a `Forbdidden` authorisation error. You will also notice that these pages print
+a nice response while `test-user` gets a `Forbidden` authorisation error. You will also notice that these pages print
 out your current logged in user and roles so you can verify that the auth is working as expected.
